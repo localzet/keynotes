@@ -8,9 +8,10 @@ import {
   Select,
   TagsInput,
   Group,
-  Tabs,
-  Code,
+  Collapse,
 } from '@mantine/core'
+import { useDisclosure } from '@mantine/hooks'
+import { IconChevronDown } from '@tabler/icons-react'
 import { useForm } from '@mantine/form'
 import { Entry, NoteEntry, KeyEntry, PasswordEntry } from '../shared/types'
 
@@ -28,6 +29,7 @@ interface EntryFormProps {
 
 export default function EntryForm({ opened, onClose, entry, entryType, onSave }: EntryFormProps) {
   const [loading, setLoading] = useState(false)
+  const [advancedOpened, { toggle: toggleAdvanced }] = useDisclosure(false)
 
   const form = useForm({
     initialValues: {
@@ -165,23 +167,37 @@ export default function EntryForm({ opened, onClose, entry, entryType, onSave }:
             {...form.getInputProps('title')}
           />
 
-          <TextInput
-            label="Категория"
-            placeholder="Категория (необязательно)"
-            {...form.getInputProps('category')}
-          />
+          <Button
+            variant="subtle"
+            leftSection={<IconChevronDown size={16} style={{ transform: advancedOpened ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }} />}
+            onClick={toggleAdvanced}
+            size="xs"
+            style={{ alignSelf: 'flex-start' }}
+          >
+            Дополнительно
+          </Button>
 
-          <TagsInput
-            label="Теги"
-            placeholder="Добавить тег"
-            {...form.getInputProps('tags')}
-          />
+          <Collapse in={advancedOpened}>
+            <Stack gap="md">
+              <TextInput
+                label="Категория"
+                placeholder="Категория (необязательно)"
+                {...form.getInputProps('category')}
+              />
+
+              <TagsInput
+                label="Теги"
+                placeholder="Добавить тег"
+                {...form.getInputProps('tags')}
+              />
+            </Stack>
+          </Collapse>
 
           {entryType === 'note' && (
             <>
               <Select
                 label="Язык программирования"
-                placeholder="Выберите язык"
+                placeholder="Выберите язык (для подсветки синтаксиса)"
                 data={[
                   { value: '', label: 'Текст' },
                   { value: 'javascript', label: 'JavaScript' },
@@ -219,8 +235,8 @@ export default function EntryForm({ opened, onClose, entry, entryType, onSave }:
           {entryType === 'key' && (
             <>
               <Textarea
-                label="Приватный ключ"
-                placeholder="Вставьте приватный ключ"
+                label="Приватный ключ / Токен"
+                placeholder="Вставьте приватный ключ или токен"
                 required
                 minRows={5}
                 styles={{
@@ -231,46 +247,45 @@ export default function EntryForm({ opened, onClose, entry, entryType, onSave }:
                 }}
                 {...form.getInputProps('key')}
               />
-              <Textarea
-                label="Публичный ключ (необязательно)"
-                placeholder="Вставьте публичный ключ"
-                minRows={3}
-                styles={{
-                  input: {
-                    fontFamily: 'monospace',
-                    fontSize: '12px',
-                  },
-                }}
-                {...form.getInputProps('publicKey')}
-              />
-              <Group grow>
-                <TextInput
-                  label="Алгоритм"
-                  placeholder="RSA, ED25519, etc."
-                  {...form.getInputProps('algorithm')}
-                />
-                <TextInput
-                  label="Размер ключа"
-                  placeholder="2048, 4096, etc."
-                  {...form.getInputProps('keySize')}
-                />
-              </Group>
-              <Textarea
-                label="Заметки"
-                placeholder="Дополнительная информация"
-                minRows={3}
-                {...form.getInputProps('keyNotes')}
-              />
+              <Collapse in={advancedOpened}>
+                <Stack gap="md">
+                  <Textarea
+                    label="Публичный ключ (необязательно)"
+                    placeholder="Вставьте публичный ключ"
+                    minRows={3}
+                    styles={{
+                      input: {
+                        fontFamily: 'monospace',
+                        fontSize: '12px',
+                      },
+                    }}
+                    {...form.getInputProps('publicKey')}
+                  />
+                  <Group grow>
+                    <TextInput
+                      label="Алгоритм"
+                      placeholder="RSA, ED25519, etc."
+                      {...form.getInputProps('algorithm')}
+                    />
+                    <TextInput
+                      label="Размер ключа"
+                      placeholder="2048, 4096, etc."
+                      {...form.getInputProps('keySize')}
+                    />
+                  </Group>
+                  <Textarea
+                    label="Заметки"
+                    placeholder="Дополнительная информация"
+                    minRows={3}
+                    {...form.getInputProps('keyNotes')}
+                  />
+                </Stack>
+              </Collapse>
             </>
           )}
 
           {entryType === 'password' && (
             <>
-              <TextInput
-                label="Имя пользователя / Email"
-                placeholder="username@example.com"
-                {...form.getInputProps('username')}
-              />
               <TextInput
                 label="Пароль"
                 type="password"
@@ -278,17 +293,26 @@ export default function EntryForm({ opened, onClose, entry, entryType, onSave }:
                 required
                 {...form.getInputProps('password')}
               />
-              <TextInput
-                label="URL / Сайт"
-                placeholder="https://example.com"
-                {...form.getInputProps('url')}
-              />
-              <Textarea
-                label="Заметки"
-                placeholder="Дополнительная информация"
-                minRows={3}
-                {...form.getInputProps('passwordNotes')}
-              />
+              <Collapse in={advancedOpened}>
+                <Stack gap="md">
+                  <TextInput
+                    label="Имя пользователя / Email"
+                    placeholder="username@example.com"
+                    {...form.getInputProps('username')}
+                  />
+                  <TextInput
+                    label="URL / Сайт"
+                    placeholder="https://example.com"
+                    {...form.getInputProps('url')}
+                  />
+                  <Textarea
+                    label="Заметки"
+                    placeholder="Дополнительная информация"
+                    minRows={3}
+                    {...form.getInputProps('passwordNotes')}
+                  />
+                </Stack>
+              </Collapse>
             </>
           )}
 

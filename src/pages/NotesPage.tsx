@@ -11,7 +11,6 @@ import {
   Badge,
   ActionIcon,
   Menu,
-  Code,
   ScrollArea,
 } from '@mantine/core'
 import { IconPlus, IconSearch, IconEdit, IconTrash, IconCopy, IconDots } from '@tabler/icons-react'
@@ -21,6 +20,8 @@ import { useVault } from '../shared/hooks/useVault'
 import { NoteEntry } from '../shared/types'
 import EntryForm from '../components/EntryForm'
 import dayjs from 'dayjs'
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
 
 export default function NotesPage() {
   const { entries, saveEntry, deleteEntry } = useVault()
@@ -155,9 +156,18 @@ export default function NotesPage() {
               </Group>
               <ScrollArea h={200}>
                 {note.language ? (
-                  <Code block style={{ width: '100%', fontSize: '12px' }}>
+                  <SyntaxHighlighter
+                    language={note.language}
+                    style={vscDarkPlus}
+                    customStyle={{
+                      margin: 0,
+                      borderRadius: '4px',
+                      fontSize: '12px',
+                    }}
+                    showLineNumbers
+                  >
                     {note.content}
-                  </Code>
+                  </SyntaxHighlighter>
                 ) : (
                   <Text size="sm" style={{ whiteSpace: 'pre-wrap' }}>
                     {note.content}

@@ -21,20 +21,22 @@
     "@mantine/notifications": "^8.3.6",
     "@mantine/nprogress": "^8.3.8",
     "@tabler/icons-react": "^3.35.0",
+    "@types/react-syntax-highlighter": "^15.5.13",
+    "crypto-js": "^4.2.0",
     "dayjs": "^1.11.18",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-error-boundary": "^6.0.0",
     "react-router-dom": "^7.9.6",
-    "crypto-js": "^4.2.0",
+    "react-syntax-highlighter": "^16.1.0",
     "uuid": "^11.0.3"
   },
   "devDependencies": {
     "@types/crypto-js": "^4.2.2",
     "@types/node": "^22.15.30",
-    "@types/uuid": "^10.0.0",
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
+    "@types/uuid": "^10.0.0",
     "@vitejs/plugin-react": "^5.0.4",
     "@vitejs/plugin-react-swc": "^4.1.0",
     "electron": "^28.0.0",
@@ -47,4 +49,3 @@
   "description": "Secure notes, keys and passwords manager with MIX ID sync",
   "author": "localzet"
 }
-
