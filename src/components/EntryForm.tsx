@@ -222,6 +222,7 @@ export default function EntryForm({ opened, onClose, entry, entryType, onSave }:
                 placeholder="Введите текст заметки или код"
                 required
                 minRows={10}
+                autosize={true}
                 styles={{
                   input: {
                     fontFamily: form.values.language ? 'monospace' : 'inherit',
@@ -239,6 +240,7 @@ export default function EntryForm({ opened, onClose, entry, entryType, onSave }:
                 placeholder="Вставьте приватный ключ или токен"
                 required
                 minRows={5}
+                autosize={true}
                 styles={{
                   input: {
                     fontFamily: 'monospace',
@@ -253,6 +255,7 @@ export default function EntryForm({ opened, onClose, entry, entryType, onSave }:
                     label="Публичный ключ (необязательно)"
                     placeholder="Вставьте публичный ключ"
                     minRows={3}
+                    autosize={true}
                     styles={{
                       input: {
                         fontFamily: 'monospace',
@@ -277,6 +280,7 @@ export default function EntryForm({ opened, onClose, entry, entryType, onSave }:
                     label="Заметки"
                     placeholder="Дополнительная информация"
                     minRows={3}
+                    autosize={true}
                     {...form.getInputProps('keyNotes')}
                   />
                 </Stack>
@@ -309,6 +313,7 @@ export default function EntryForm({ opened, onClose, entry, entryType, onSave }:
                     label="Заметки"
                     placeholder="Дополнительная информация"
                     minRows={3}
+                    autosize={true}
                     {...form.getInputProps('passwordNotes')}
                   />
                 </Stack>

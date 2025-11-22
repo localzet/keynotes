@@ -27,3 +27,4 @@ dist-electron
 out
 build
 
+.env
