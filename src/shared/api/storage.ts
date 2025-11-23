@@ -1,4 +1,4 @@
-import { Entry, Vault, AppSettings } from '../types'
+import { Entry, Vault, AppSettings, NoteEntry, KeyEntry, PasswordEntry } from '../types'
 import { encrypt, decrypt, hashPassword } from '../utils/encryption'
 
 const STORAGE_KEYS = {
@@ -124,21 +124,29 @@ class Storage {
       
       // Re-encrypt all entries with new password
       this.vault.entries = decryptedEntries.map(entry => {
-        const encrypted = { ...entry }
-        encrypted.encrypted = true
-        
         if (entry.type === 'password') {
-          encrypted.password = encrypt(entry.password, newPassword)
-        } else if (entry.type === 'key') {
-          encrypted.key = encrypt(entry.key, newPassword)
-          if (entry.publicKey) {
-            encrypted.publicKey = encrypt(entry.publicKey, newPassword)
+          const encrypted: PasswordEntry = {
+            ...entry,
+            encrypted: true,
+            password: encrypt(entry.password, newPassword),
           }
-        } else if (entry.type === 'note') {
-          encrypted.content = encrypt(entry.content, newPassword)
+          return encrypted
+        } else if (entry.type === 'key') {
+          const encrypted: KeyEntry = {
+            ...entry,
+            encrypted: true,
+            key: encrypt(entry.key, newPassword),
+            ...(entry.publicKey && { publicKey: encrypt(entry.publicKey, newPassword) }),
+          }
+          return encrypted
+        } else {
+          const encrypted: NoteEntry = {
+            ...entry,
+            encrypted: true,
+            content: encrypt(entry.content, newPassword),
+          }
+          return encrypted
         }
-        
-        return encrypted
       })
       
       await this.saveVault()
@@ -286,21 +294,29 @@ class Storage {
       }
     }
     
-    const encrypted = { ...entryToEncrypt }
-    encrypted.encrypted = true
-
     if (entryToEncrypt.type === 'password') {
-      encrypted.password = encrypt(entryToEncrypt.password, this.masterPassword)
-    } else if (entryToEncrypt.type === 'key') {
-      encrypted.key = encrypt(entryToEncrypt.key, this.masterPassword)
-      if (entryToEncrypt.publicKey) {
-        encrypted.publicKey = encrypt(entryToEncrypt.publicKey, this.masterPassword)
+      const encrypted: PasswordEntry = {
+        ...entryToEncrypt,
+        encrypted: true,
+        password: encrypt(entryToEncrypt.password, this.masterPassword),
       }
-    } else if (entryToEncrypt.type === 'note') {
-      encrypted.content = encrypt(entryToEncrypt.content, this.masterPassword)
+      return encrypted
+    } else if (entryToEncrypt.type === 'key') {
+      const encrypted: KeyEntry = {
+        ...entryToEncrypt,
+        encrypted: true,
+        key: encrypt(entryToEncrypt.key, this.masterPassword),
+        ...(entryToEncrypt.publicKey && { publicKey: encrypt(entryToEncrypt.publicKey, this.masterPassword) }),
+      }
+      return encrypted
+    } else {
+      const encrypted: NoteEntry = {
+        ...entryToEncrypt,
+        encrypted: true,
+        content: encrypt(entryToEncrypt.content, this.masterPassword),
+      }
+      return encrypted
     }
-
-    return encrypted
   }
 
   /**
@@ -316,21 +332,29 @@ class Storage {
       return entry
     }
 
-    const decrypted = { ...entry }
-    decrypted.encrypted = false
-
     if (entry.type === 'password') {
-      decrypted.password = decrypt(entry.password, this.masterPassword)
-    } else if (entry.type === 'key') {
-      decrypted.key = decrypt(entry.key, this.masterPassword)
-      if (entry.publicKey) {
-        decrypted.publicKey = decrypt(entry.publicKey, this.masterPassword)
+      const decrypted: PasswordEntry = {
+        ...entry,
+        encrypted: false,
+        password: decrypt(entry.password, this.masterPassword),
       }
-    } else if (entry.type === 'note') {
-      decrypted.content = decrypt(entry.content, this.masterPassword)
+      return decrypted
+    } else if (entry.type === 'key') {
+      const decrypted: KeyEntry = {
+        ...entry,
+        encrypted: false,
+        key: decrypt(entry.key, this.masterPassword),
+        ...(entry.publicKey && { publicKey: decrypt(entry.publicKey, this.masterPassword) }),
+      }
+      return decrypted
+    } else {
+      const decrypted: NoteEntry = {
+        ...entry,
+        encrypted: false,
+        content: decrypt(entry.content, this.masterPassword),
+      }
+      return decrypted
     }
-
-    return decrypted
   }
 
   /**
