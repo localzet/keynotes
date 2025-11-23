@@ -84,7 +84,7 @@ jobs:
           $exeFile = Get-ChildItem -Path dist -Filter "*.exe" | Select-Object -First 1
           if ($exeFile) {
             # Normalize name: lowercase with dashes
-            $newName = "keynotes-$version.exe"
+            $newName = "windows-$version.exe"
             Rename-Item -Path $exeFile.FullName -NewName $newName
             echo "Renamed to: $newName"
           }
@@ -136,14 +136,14 @@ jobs:
           # Rename deb package
           DEB=$(find dist -name "*.deb" -type f | head -n 1)
           if [ -n "$DEB" ]; then
-            NEW_NAME="keynotes-$VERSION.deb"
+            NEW_NAME="linux-$VERSION.deb"
             mv "$DEB" "dist/$NEW_NAME"
             echo "Renamed deb to: $NEW_NAME"
           fi
           # Rename AppImage
           APPIMAGE=$(find dist -name "*.AppImage" -type f | head -n 1)
           if [ -n "$APPIMAGE" ]; then
-            NEW_NAME="keynotes-$VERSION.AppImage"
+            NEW_NAME="linux-$VERSION.AppImage"
             mv "$APPIMAGE" "dist/$NEW_NAME"
             echo "Renamed AppImage to: $NEW_NAME"
           fi
