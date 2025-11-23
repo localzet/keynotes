@@ -48,5 +48,8 @@
     "vite-tsconfig-paths": "^5.1.4"
   },
   "description": "Secure notes, keys and passwords manager with MIX ID sync",
-  "author": "localzet"
+  "author": {
+    "name": "localzet",
+    "email": "creator@localzet.com"
+  }
 }
