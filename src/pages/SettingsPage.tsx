@@ -18,9 +18,8 @@ import { useDisclosure } from '@mantine/hooks'
 import { notifications } from '@mantine/notifications'
 import { IconPlug, IconSettings, IconLogout, IconDownload, IconUpload } from '@tabler/icons-react'
 import { useVault } from '../shared/hooks/useVault'
-import { mixIdApi } from '../shared/api/mixIdApi'
 import { storage } from '../shared/api/storage'
-import MixIdConnection from '../components/MixIdConnection'
+import { MixIdConnection } from '@localzet/data-connector/components'
 
 export default function SettingsPage() {
   const { settings, updateSettings, changePassword } = useVault()
@@ -113,7 +112,11 @@ export default function SettingsPage() {
         <Text c="dimmed">Управление настройками приложения</Text>
       </div>
 
-      <MixIdConnection />
+      <MixIdConnection 
+        showSyncSettings={false}
+        showSyncData={true}
+        notifications={notifications}
+      />
 
       <Paper p="xl" withBorder>
         <Stack gap="md">

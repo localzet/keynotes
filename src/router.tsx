@@ -8,7 +8,7 @@ const NotesPage = lazy(() => import('./pages/NotesPage'))
 const KeysPage = lazy(() => import('./pages/KeysPage'))
 const PasswordsPage = lazy(() => import('./pages/PasswordsPage'))
 const SettingsPage = lazy(() => import('./pages/SettingsPage'))
-const MixIdCallbackPage = lazy(() => import('./pages/MixIdCallbackPage'))
+const MixIdCallbackPage = lazy(() => import('@localzet/data-connector/components').then(m => ({ default: m.MixIdCallbackPage })))
 
 const router = createBrowserRouter([
   {
